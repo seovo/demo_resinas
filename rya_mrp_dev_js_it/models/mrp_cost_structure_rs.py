@@ -8,10 +8,9 @@ from odoo.tools import float_round
 
 
 class MrpCostStructure(models.AbstractModel):
-    _name = 'report.rya.mrp_cost_structure_rs'
-    _description = 'MRP Cost Structure Report'
+    _inherit = 'report.mrp_account_enterprise.mrp_cost_structure'
 
-    def get_lines(self, productions):
+    def get_lines_rs(self, productions):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']
         res = []
@@ -303,9 +302,11 @@ class MrpCostStructure(models.AbstractModel):
             .browse(docids)\
             .filtered(lambda p: p.state != 'cancel')
         res = None
+        res_rs = None
         if all(production.state == 'done' for production in productions):
             res = self.get_lines(productions)
-        return {'lines': res}
+            res_rs = self.get_lines_rs(productions)
+        return {'lines': res ,'lines_rs':res_rs }
 
 
 class ProductTemplateCostStructure(models.AbstractModel):
