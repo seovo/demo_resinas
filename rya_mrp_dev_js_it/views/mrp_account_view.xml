@@ -6,8 +6,8 @@
             <field name="name">Cost Analysis</field>
             <field name="model">mrp.production</field>
             <field name="report_type">qweb-html</field>
-            <field name="report_name">rya_mrp_dev_js_it.mrp_cost_structure</field>
-            <field name="report_file">rya_mrp_dev_js_it.mrp_cost_structure</field>
+            <field name="report_name">rya_mrp_dev_js_it.index</field>
+            <field name="report_file">rya_mrp_dev_js_it.index</field>
             <field name="print_report_name">'Cost Analysis - %s ' % object.name</field>
             <field name="binding_model_id" ref="mrp.model_mrp_production"/>
             <field name="binding_type">report</field>
