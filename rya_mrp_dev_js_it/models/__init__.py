@@ -4,7 +4,7 @@ from . import mrp_bom
 from . import mrp_bom_line
 from . import stock_move
 from . import plantilla_ratios
-#from . import mrp_cost_structure
+from . import mrp_cost_structure_rs
 from . import stock_production_lot
 from . import product
 from . import empaque_stock_move

@@ -19,7 +19,7 @@
         'views/solicitud_material.xml',
         'views/mrp_bom.xml',
         'views/plantilla_ratios.xml',
-        #'views/cost_structure_report.xml',
+        'views/cost_structure_report.xml',
         'views/mrp_production.xml',
         'views/mrp_unbuild.xml',
         'views/stock_production_lot.xml',
