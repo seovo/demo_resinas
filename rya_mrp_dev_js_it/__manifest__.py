@@ -23,6 +23,7 @@
         'views/mrp_production.xml',
         'views/mrp_unbuild.xml',
         'views/stock_production_lot.xml',
+        'views/mrp_account_view.xml'
         ],
     'installable': True
 }
