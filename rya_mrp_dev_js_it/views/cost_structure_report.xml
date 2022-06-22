@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="mrp_account_enterprise.mrp_cost_structure">
+    <template id="mrp_cost_structure">
         <t t-call="web.basic_layout">
             <t t-call-assets="mrp_account_enterprise.assets_mrp_cost_structure_report" t-js="False"/>
             <div class="page o_mrp_report_page">
