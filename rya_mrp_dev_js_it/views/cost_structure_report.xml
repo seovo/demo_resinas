@@ -29,7 +29,7 @@
                         </td>
                         <td class="text-right">
                             <span t-esc="byproduct[1]"/>
-                            <span groups="uom.group_uom" t-esc="byproduct[0].uom_id.name"/>
+                            <span  t-esc="byproduct[0].uom_id.name"/>
                         </td>
                     </div>
                     <h6 class="h6" t-if="line['subproductos']" >
@@ -61,7 +61,7 @@
                                     <th t-if="line['operations']" class="text-right o_mrp_report_line_header"><span>Avg Cost of Operations Per Unit</span></th>
                                     <th class="text-right o_mrp_report_line_header"><span>Avg Total Cost Per Unit</span></th>
                                     -->
-                                    <th class="o_mrp_report_line_header text-right" groups="uom.group_uom"><span>Unidad</span></th>
+                                    <th class="o_mrp_report_line_header text-right" ><span>Unidad</span></th>
                                     <th class="text-right o_mrp_report_line_header" t-if="line['here_package']" ><span>Empaque</span></th>
                                     <th class="text-right o_mrp_report_line_header"><span>C. Teorico Unid</span></th>
                                     <th class="text-right o_mrp_report_line_header"><span>C. Teorico Kg </span></th>
@@ -78,20 +78,10 @@
                                     <td>
                                         <span t-esc="line['product'].name"/>
                                     </td>
-                                    <td groups="uom.group_uom" class="text-right">
+                                    <td class="text-right">
                                         <span t-esc="line['product'].uom_id.name"/>
                                     </td>
-                                    <!--
-                                    <td class="text-right">
-                                        <span t-esc="line['component_cost_by_product'][line['product']] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    <td t-if="line['operations']" class="text-right">
-                                        <span t-esc="line['operation_cost_by_product'][line['product']] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-esc="line['total_cost_by_product'][line['product']] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    -->
+
                                     <td t-if="line['here_package']" class="text-right" >
                                         <span t-esc="line['cost_empaque']" t-options='{"widget": "monetary", "display_currency": currency}' />
                                     </td>
@@ -127,7 +117,7 @@
                                         <span t-esc="byproduct['cost_empaque']" t-options='{"widget": "monetary", "display_currency": currency}' />
                                     </td>
 
-                                    <td groups="uom.group_uom" class="text-right">
+                                    <td  class="text-right">
                                         <span t-esc="byproduct['product'].uom_id.name"/>
                                     </td>
 
