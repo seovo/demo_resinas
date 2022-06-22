@@ -8,7 +8,7 @@ from odoo.tools import float_round
 
 
 class MrpCostStructure(models.AbstractModel):
-    _name = 'report.mrp_account_enterprise.mrp_cost_structure_rs'
+    _name = 'report.rya.mrp_cost_structure_rs'
     _description = 'MRP Cost Structure Report'
 
     def get_lines(self, productions):
@@ -309,12 +309,12 @@ class MrpCostStructure(models.AbstractModel):
 
 
 class ProductTemplateCostStructure(models.AbstractModel):
-    _name = 'report.mrp_account_enterprise.product_template_cost_structure_rs'
+    _name = 'report.rya.product_template_cost_structure_rs'
     _description = 'Product Template Cost Structure Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         productions = self.env['mrp.production'].search([('product_id', 'in', docids), ('state', '=', 'done')])
-        res = self.env['report.mrp_account_enterprise.mrp_cost_structure_rs'].get_lines(productions)
+        res = self.env['report.rya.mrp_cost_structure_rs'].get_lines(productions)
         return {'lines': res}
 
