@@ -218,14 +218,14 @@ class MrpCostStructure(models.AbstractModel):
 
 
             #avg_cost_unit =
-            cost_empaque = 0
+            cost_empaque_line = 0
 
             for pts in productions:
                 for rmv in raw_material_moves:
                     if rmv['pt']:
                         if rmv['pt'].mrp_production:
                             if rmv['pt'].mrp_production == pts:
-                                cost_empaque += rmv['cost_unit']
+                                cost_empaque_line += rmv['cost_unit']
                                 here_package = True
 
             subproductos = []
@@ -289,7 +289,7 @@ class MrpCostStructure(models.AbstractModel):
                 'weight_total_components': weight_total_components ,
                 'here_package':here_package ,
                 'cost_empaque_byproduct_w_costshare': cost_empaque_byproduct_w_costshare ,
-                'cost_empaque': cost_empaque,
+                'cost_empaque': cost_empaque_line,
                 'origin_x_kilo' : origin_x_kilo_line,
                 'avg_x_kilo' : avg_x_kilo_line,
                 'operation_x_kilo' : operation_x_kilo_line
