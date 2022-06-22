@@ -113,13 +113,14 @@
                                     <td>
                                         <span t-esc="byproduct['product'].display_name" />
                                     </td>
+                                    <td  class="text-right">
+                                        <span t-esc="byproduct['product'].uom_id.name"/>
+                                    </td>
                                     <td t-if="line['here_package']" class="text-right">
                                         <span t-esc="byproduct['cost_empaque']" t-options='{"widget": "monetary", "display_currency": currency}' />
                                     </td>
 
-                                    <td  class="text-right">
-                                        <span t-esc="byproduct['product'].uom_id.name"/>
-                                    </td>
+
 
                                     <!--
                                     <td class="text-right">
