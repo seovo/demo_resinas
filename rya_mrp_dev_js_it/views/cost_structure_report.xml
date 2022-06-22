@@ -2,15 +2,15 @@
 <odoo>
     <template id="mrp_cost_structure">
         <t t-call="web.basic_layout">
-            <t t-call-assets="rya.assets_mrp_cost_structure_rs_report" t-js="False"/>
+            <t t-call-assets="mrp_account_enterprise.assets_mrp_cost_structure_report" t-js="False"/>
             <div class="page o_mrp_report_page">
-                <t t-if="not lines">
+                <t t-if="not lines_rs">
                     <span class="text-center o_mrp_report_info"><h1>Some of the Manufacturing Order(s) selected are not done yet</h1></span>
                 </t>
                 <t t-else="">
                     <span class="text-left"><h1 class="o_mrp_header o_mrp_header1">Cost Analysis Report</h1></span>
                 </t>
-                <t t-foreach="lines" t-as="line">
+                <t t-foreach="lines_rs" t-as="line">
                     <t t-set="currency" t-value="line['currency']"/>
                     <t t-set="opcost" t-value="0.0"/>
                     <t t-set="tot_scrap_cost" t-value="0.0"/>

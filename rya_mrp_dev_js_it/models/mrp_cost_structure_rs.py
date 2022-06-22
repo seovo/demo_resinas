@@ -309,12 +309,12 @@ class MrpCostStructure(models.AbstractModel):
 
 
 class ProductTemplateCostStructure(models.AbstractModel):
-    _name = 'report.rya.product_template_cost_structure_rs'
-    _description = 'Product Template Cost Structure Report'
+    _inherit = 'report.mrp_account_enterprise.product_template_cost_structure'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         productions = self.env['mrp.production'].search([('product_id', 'in', docids), ('state', '=', 'done')])
-        res = self.env['report.rya.mrp_cost_structure_rs'].get_lines(productions)
-        return {'lines': res}
+        res = self.env['report.mrp_account_enterprise.mrp_cost_structure'].get_lines(productions)
+        res_rs = self.env['report.rya.mrp_cost_structure_rs'].get_lines(productions)
+        return {'lines': res , 'lines_rs':res_rs}
 
