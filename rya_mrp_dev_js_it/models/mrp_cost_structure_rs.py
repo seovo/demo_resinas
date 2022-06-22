@@ -8,9 +8,10 @@ from odoo.tools import float_round
 
 
 class MrpCostStructure(models.AbstractModel):
-    _inherit = 'report.mrp_account_enterprise.mrp_cost_structure'
+    _name = 'report.rya_mrp_dev_js_it.index'
+    _description = 'MRP Cost Structure Report'
 
-    def get_lines_rs(self, productions):
+    def get_lines(self, productions):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']
         res = []
@@ -302,20 +303,18 @@ class MrpCostStructure(models.AbstractModel):
             .browse(docids)\
             .filtered(lambda p: p.state != 'cancel')
         res = None
-        res_rs = None
         if all(production.state == 'done' for production in productions):
             res = self.get_lines(productions)
-            res_rs = self.get_lines_rs(productions)
-        return {'lines': res ,'lines_rs':res_rs }
+        return {'lines': res}
 
 
 class ProductTemplateCostStructure(models.AbstractModel):
-    _inherit = 'report.mrp_account_enterprise.product_template_cost_structure'
+    _name = 'report.rya_mrp_dev_js_it.indext'
+    _description = 'Product Template Cost Structure Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         productions = self.env['mrp.production'].search([('product_id', 'in', docids), ('state', '=', 'done')])
-        res = self.env['report.mrp_account_enterprise.mrp_cost_structure'].get_lines(productions)
-        res_rs = self.env['report.rya.mrp_cost_structure_rs'].get_lines(productions)
-        return {'lines': res , 'lines_rs':res_rs}
+        res = self.env['report.rya_mrp_dev_js_it.index'].get_lines(productions)
+        return {'lines': res}
 
