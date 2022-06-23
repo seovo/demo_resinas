@@ -8,7 +8,7 @@
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="is_volume" />
                 </xpath>
-                <xpath expr="//field[@name='uom_ids']/tree/field[@name='rounding]" position="after">
+                <xpath expr="//field[@name='uom_ids']/tree/field[@name='rounding']" position="after">
                     <field name="is_volume" invisible="1" />
                     <field name="ratio_kg"
                            attrs="{'invisible': [('is_volume', '!=', True )]}"
