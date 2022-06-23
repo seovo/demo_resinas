@@ -253,9 +253,9 @@ class MrpCostStructure(models.AbstractModel):
 
                 ))
 
-            origin_x_kilo_line =  total_origin_unit_kilo + cost_empaque
-            avg_x_kilo_line = avg_cost_unit_kilo + cost_empaque
-            operation_x_kilo_line = total_operation_unit + cost_empaque
+            origin_x_kilo_line =  total_origin_unit_kilo + cost_empaque_line
+            avg_x_kilo_line = avg_cost_unit_kilo + cost_empaque_line
+            operation_x_kilo_line = total_operation_unit + cost_empaque_line
 
             res.append({
                 'product': product,
