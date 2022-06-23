@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="uom_category" model="ir.ui.view">
+            <field name="name">uom.category</field>
+            <field name="model">uom.category</field>
+            <field name="inherit_id" ref="uom.product_uom_categ_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_volume" />
+                </xpath>
+                <xpath expr="//field[@name='uom_ids']/tree/field[@name='rounding]" position="after">
+                    <field name="is_volume" invisible="1" />
+                    <field name="ratio_kg"
+                           attrs="{'invisible': [('is_volume', '!=', True )]}"
+                           optional="show"/>
+                </xpath>
+            </field>
+    </record>
+
+</odoo>
