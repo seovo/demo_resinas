@@ -15,7 +15,7 @@ class PurchaseLine(models.Model):
             if not record.unit_prove:
                 continue
             ratio = 0
-            for r in record.product_id.ratios_uom:
+            for r in record.product_id.ratios_ids:
                 if r.unit_prove == record.unit_prove:
                     ratio = r.ratio_kg
 
