@@ -20,6 +20,7 @@ class PurchaseLine(models.Model):
                     ratio = r.ratio_kg
 
             record.ratio_kg = ratio
+            record.change_price_ps()
 
     @api.onchange('ratio_kg','prec_prov','cant_prov','unit_prove')
     def change_price_ps(self):

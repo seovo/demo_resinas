@@ -8,7 +8,7 @@
                 <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
 
                     <field name="ratio_kg"
-                           optional="hidden" />
+                           optional="hidden" invisible="1" />
                     <field name="unit_prove" optional="hidden"  />
                     <field name="cant_prov" optional="hidden"  />
                     <field name="prec_prov" optional="hidden"  />
