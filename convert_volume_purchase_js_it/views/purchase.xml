@@ -24,7 +24,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='general_information']" position="after">
                    <page name="ratios_" string="Ratios" >
-                       <field name="ratios_uom" widget="one2many" context="{'show_attribute': False}">
+                       <field name="ratios_ids" widget="one2many" context="{'show_attribute': False}">
                           <tree string="Ratios" editable="bottom" >
                              <field name="unit_prove" />
                              <field name="ratio_kg" />
