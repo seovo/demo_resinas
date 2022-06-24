@@ -12,7 +12,7 @@
     'demo': [],
     'data': [
         #'security/security.xml',
-        'views/stock_picking.xml',
+        'stock_picking.xml',
         ],
     'installable': True
 }
