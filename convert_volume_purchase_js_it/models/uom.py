@@ -15,3 +15,8 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
     ratios_ids = fields.One2many('ratios.ratios.tmp','product_id')
 
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+    ratios_ids = fields.One2many('ratios.ratios.tmp','product_id')
+
