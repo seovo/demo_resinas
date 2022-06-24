@@ -10,6 +10,10 @@ class PurchaseLine(models.Model):
     @api.onchange('product_id', 'unit_prove')
     def change_ratio(self):
         for record in self:
+            if not record.product_id:
+                continue
+            if not record.unit_prove:
+                continue
             ratio = 0
             for r in record.product_id.ratios_uom:
                 if r.unit_prove == record.unit_prove:
