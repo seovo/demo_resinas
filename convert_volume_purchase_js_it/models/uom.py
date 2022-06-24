@@ -6,7 +6,7 @@ class UomCategory(models.Model):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    ratios_uom  = fields.One2many('ratios.template')
+    ratios_uom  = fields.One2many('ratios.template','product_tmp_id')
 
 class RatiosRatios(models.Model):
     name = 'ratios.template'
