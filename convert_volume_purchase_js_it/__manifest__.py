@@ -11,7 +11,7 @@
     'auto_install': False,
     'demo': [],
     'data': [
-        #'security/security.xml',
+        'security/ir.model.access.csv ',
         'views/uom.xml',
         'views/purchase.xml',
         ],

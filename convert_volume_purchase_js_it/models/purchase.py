@@ -8,7 +8,17 @@ class PurchaseLine(models.Model):
     cant_prov = fields.Float(string="Cant.Prov")
     prec_prov = fields.Float(string="Prec.Prov")
 
-    @api.onchange('ratio_kg','unit_prove','prec_prov','cant_prov')
+    @api.onchage('product_id','unit_prove')
+    def change_ratio(self):
+        for record in self:
+            ratio = 0
+            for r in record.product_id.ratios_uom:
+                if r.unit_prove == record.unit_prove:
+                    ratio = r. ratio_kg
+
+            record.ratio_kg = ratio
+
+    @api.onchange('ratio_kg','prec_prov','cant_prov')
     def change_price_ps(self):
         for record in  self:
             qty = record.cant_prov * record.ratio_kg

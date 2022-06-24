@@ -16,20 +16,26 @@
             </field>
     </record>
 
-    <!--
+
     <record id="product_tempalte" model="ir.ui.view">
             <field name="name">product.template</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='barcode']" position="after">
-                    <field name="is_volume" invisible="1" />
-                    <field name="ratio_kg"
-                           attrs="{'invisible': [('is_volume', '!=', True )]}"
-                           optional="hidden" />
+                <xpath expr="//page[@name='general_information']" position="after">
+                   <page name="ratios_" string="Ratios" >
+                       <field name="ratios_uom" widget="one2many" context="{'show_attribute': False}">
+                          <tree string="Ratios" editable="bottom" >
+                             <field name="unit_prove" />
+                             <field name="ratio_kg" />
+
+                          </tree>
+                       </field>
+
+                  </page>
                 </xpath>
             </field>
     </record>
-    -->
+
 
 </odoo>
