@@ -9,6 +9,9 @@ class StockMove(models.Model):
                                       digits='Product Unit of Measure')
     empaque_line = fields.Many2one('empaque.stock.mv', string="PT")
 
+    rs_unit_cost = fields.Float()
+    rs_value = fields.Float()
+
 
 
 

@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 {
-    'name': 'NOmbre',
+    'name': 'Agregar Empleado',
     'category': 'uncategorize',
     'author': 'ITGRUPO',
     'depends': ['hr','stock'],

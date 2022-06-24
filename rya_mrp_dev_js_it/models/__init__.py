@@ -8,3 +8,4 @@ from . import mrp_cost_structure_rs
 from . import stock_production_lot
 from . import product
 from . import empaque_stock_move
+from . import stock_valuation_layer

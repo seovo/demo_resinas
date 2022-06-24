@@ -7,7 +7,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='bom_id']" position="before">
-                    <field name="product_qty_origin"  readonly="1" force_save="1" />
+                    <field name="product_qty_origin"  invisible="1"
+                           readonly="1" force_save="1" />
                 </xpath>
                 <xpath expr="//notebook/page[@name='components']/field/tree/field[@name='location_id']" position="after">
                     <field name="solicitud_production" optional="show"/>
@@ -18,6 +19,7 @@
                            optional="hidden" />
                     <field name="stage_id" optional="show"/>
                     <field name="should_consume_qty_store" optional="hidden"
+                           invisible="1"
                            readonly="1" force_save="1" />
                 </xpath>
                 <xpath expr="//notebook" position="inside">

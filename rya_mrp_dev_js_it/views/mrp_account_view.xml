@@ -24,6 +24,9 @@
                         class="oe_stat_button" icon="fa-dollar"
                             string="Costo Analisis Resinas" attrs="{'invisible': [('state', '!=', 'done')]}">
                     </button>
+
+
+                   <button name="calculate_new_cost_rs" type="object" string="UHHH" />
                 </div>
             </field>
         </record>
