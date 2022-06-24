@@ -20,7 +20,7 @@ class PurchaseLine(models.Model):
             tot_tmp = record.cant_prov * record.prec_prov
             record.price_unit = tot_tmp / qty if qty != 0 else 0
 
-    @api.onchage('product_id', 'unit_prove')
+    @api.onchange('product_id', 'unit_prove')
     def change_ratio(self):
         for record in self:
             ratio = 0
