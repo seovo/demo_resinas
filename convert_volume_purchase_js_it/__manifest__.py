@@ -13,6 +13,7 @@
     'data': [
         #'security/security.xml',
         'views/uom.xml',
+        'views/purchase.xml',
         ],
     'installable': True
 }
