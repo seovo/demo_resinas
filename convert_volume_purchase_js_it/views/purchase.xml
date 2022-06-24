@@ -8,7 +8,6 @@
                 <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
                     <field name="is_volume" invisible="1" />
                     <field name="ratio_kg"
-                           attrs="{'invisible': [('is_volume', '!=', True )]}"
                            optional="hidden" />
                     <field name="unit_prove" optional="hidden"  />
                     <field name="cant_prov" optional="hidden"  />
@@ -17,7 +16,7 @@
             </field>
     </record>
 
-
+    <!--
     <record id="product_tempalte" model="ir.ui.view">
             <field name="name">product.template</field>
             <field name="model">product.template</field>
@@ -31,5 +30,6 @@
                 </xpath>
             </field>
     </record>
+    -->
 
 </odoo>
