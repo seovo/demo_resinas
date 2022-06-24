@@ -13,5 +13,5 @@ class RatiosRatios(models.Model):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    #ratios_ids = fields.One2many('ratios.ratios.tmp','product_id')
+    ratios_ids = fields.One2many('ratios.ratios.tmp','product_id')
 
