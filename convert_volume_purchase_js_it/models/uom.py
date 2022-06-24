@@ -5,7 +5,7 @@ class UomCategory(models.Model):
     is_volume = fields.Boolean(string="Es Volumen")
 
 class RatiosRatios(models.Model):
-    name = 'ratios.template'
+    name = 'ratios.ratios.tmp'
     product_tmp_id = fields.Many2one('product.template')
     unit_prove = fields.Many2one('uom.uom', domain=[('category_id.is_volume', '=', True)],
                                  string="Und. Prove",required=True)
@@ -13,5 +13,5 @@ class RatiosRatios(models.Model):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    ratios_uom = fields.One2many('ratios.template','product_tmp_id')
+    ratios_ids = fields.One2many('ratios.ratios.tmp','product_tmp_id')
 
