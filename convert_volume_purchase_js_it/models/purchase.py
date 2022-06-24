@@ -21,7 +21,7 @@ class PurchaseLine(models.Model):
 
             record.ratio_kg = ratio
 
-    @api.onchange('ratio_kg','prec_prov','cant_prov')
+    @api.onchange('ratio_kg','prec_prov','cant_prov','unit_prove')
     def change_price_ps(self):
         for record in  self:
             qty = record.cant_prov * record.ratio_kg
