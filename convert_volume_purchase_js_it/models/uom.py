@@ -6,12 +6,12 @@ class UomCategory(models.Model):
 
 class RatiosRatios(models.Model):
     name = 'ratios.ratios.tmp'
-    product_tmp_id = fields.Many2one('product.template')
+    product_id = fields.Many2one('product.template')
     unit_prove = fields.Many2one('uom.uom', domain=[('category_id.is_volume', '=', True)],
                                  string="Und. Prove",required=True)
     ratio_kg = fields.Float(digits=(13, 10), string="Ratio KG")
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    ratios_ids = fields.One2many('ratios.ratios.tmp','product_tmp_id')
+    ratios_ids = fields.One2many('ratios.ratios.tmp','product_id')
 
