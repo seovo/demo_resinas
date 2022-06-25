@@ -144,7 +144,7 @@ class MrpCostStructure(models.AbstractModel):
                     component_cost_by_product[move.product_id] += component_cost_by_mo[move.production_id.id] * cost_share
                     operation_cost_by_product[move.product_id] += operation_cost_by_mo[move.production_id.id] * cost_share
 
-            #raise  ValueError(cost_empaque_byproduct_w_costshare)
+            #raise  ValueError(qty_by_byproduct_w_costshare)
 
             # Get product qty and its relative total + avg per uom cost share amount
             uom = product.uom_id

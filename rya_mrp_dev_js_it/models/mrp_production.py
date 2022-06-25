@@ -12,7 +12,7 @@ class MrpProduction(models.Model):
     def calculate_new_cost_rs(self):
         res = self.env['report.rya_mrp_dev_js_it.index'].get_lines(self)
         res = res[0]
-        raise ValueError(str(res))
+        #raise ValueError(str(res))
         cp =  0
         con_by = defaultdict(float)
         for l in self.move_finished_ids:
@@ -191,17 +191,17 @@ class MrpProduction(models.Model):
                     })
 
     def button_mark_done(self):
-        '''
+
         for l in self.move_byproduct_ids:
             if not l.product_uom_qty or l.product_uom_qty == 0:
                 raise UserError('La cantidad de los subproductos no puede ser cero')
             if not l.quantity_done or l.quantity_done == 0:
                 raise UserError('La cantidad producida de los subproductos no puede ser cero')
-        '''
+
 
         res = super(MrpProduction, self).button_mark_done()
-        self.calculate_new_cost_rs()
-        '''
+
+
         total_count = 0
         for l in self.move_byproduct_ids:
             total_count += l.quantity_done
@@ -210,7 +210,9 @@ class MrpProduction(models.Model):
         for l in self.move_byproduct_ids:
             if total_count != 0:
                 l.cost_share += (l.quantity_done / total_count) * 100
-        '''
+
+        self.calculate_new_cost_rs()
+
 
         return res
 
