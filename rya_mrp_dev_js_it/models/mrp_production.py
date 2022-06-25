@@ -12,7 +12,7 @@ class MrpProduction(models.Model):
     def calculate_new_cost_rs(self):
         res = self.env['report.rya_mrp_dev_js_it.index'].get_lines(self)
         res = res[0]
-        #raise ValueError(str(res))
+        raise ValueError(str(res))
         cp =  0
         con_by = defaultdict(float)
         for l in self.move_finished_ids:

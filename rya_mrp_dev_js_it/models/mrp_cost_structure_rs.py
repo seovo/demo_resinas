@@ -273,7 +273,7 @@ class MrpCostStructure(models.AbstractModel):
                 'operation_cost_by_product': operation_cost_by_product,
                 'qty_by_byproduct': qty_by_byproduct,
                 'subproductos': subproductos,
-                #'qty_by_byproduct_w_costshare':qty_by_byproduct_w_costshare
+                'qty_by_byproduct_w_costshare':qty_by_byproduct_w_costshare ,
                 'total_cost_by_product': total_cost_by_product ,
                 'ratios': ratios ,
                 'total_ratio': total_ratiox ,
