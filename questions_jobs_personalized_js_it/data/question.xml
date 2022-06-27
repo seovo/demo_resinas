@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    <record id="answer1" model="question.js.it">
+        <field name="name">Nombres</field>
+        <field name="ttype">char</field>
+        <field name="sequence">0</field>
+    </record>
+    -->
+
+    <record id="answer2" model="question.js.it">
+        <field name="name">Apellidos</field>
+        <field name="ttype">char</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="answer3" model="question.js.it">
+        <field name="name">Indica tu fecha de nacimiento</field>
+        <field name="ttype">date</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record id="answer4" model="question.js.it">
+        <field name="name">Indica tu género</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <record id="answer5" model="question.js.it">
+        <field name="name">Tipo de Documento</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">4</field>
+    </record>
+
+    <record id="answer6" model="question.js.it">
+        <field name="name">Número de Documento</field>
+        <field name="ttype">char</field>
+        <field name="sequence">5</field>
+    </record>
+
+    <record id="answer7" model="question.js.it">
+        <field name="name">Número de Pasaporte</field>
+        <field name="ttype">char</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record id="answer8" model="question.js.it">
+        <field name="name">Estatura Aproximada</field>
+        <field name="ttype">char</field>
+        <field name="sequence">7</field>
+    </record>
+
+    <record id="answer9" model="question.js.it">
+        <field name="name">Peso Aproximado</field>
+        <field name="ttype">char</field>
+        <field name="sequence">9</field>
+    </record>
+
+    <record id="answer10" model="question.js.it">
+        <field name="name">Numero de vacunas COVID-19 Aplicadas a la fecha</field>
+        <field name="ttype">char</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="answer11" model="question.js.it">
+        <field name="name">Correo electrónico</field>
+        <field name="ttype">char</field>
+        <field name="sequence">11</field>
+        <field name="is_email">True</field>
+    </record>
+
+    <record id="answer12" model="question.js.it">
+        <field name="name">Numero de celular</field>
+        <field name="ttype">char</field>
+        <field name="sequence">12</field>
+    </record>
+
+    <record id="answer13" model="question.js.it">
+        <field name="name">Lugar de Residencia</field>
+        <field name="ttype">char</field>
+        <field name="sequence">13</field>
+    </record>
+
+    <record id="answer14" model="question.js.it">
+        <field name="name">Expectativa salarial mensual</field>
+        <field name="ttype">char</field>
+        <field name="sequence">14</field>
+    </record>
+
+    <record id="answer15" model="question.js.it">
+        <field name="name">Está de acuerdo con el salario ofrecido</field>
+        <field name="ttype">boolean</field>
+        <field name="sequence">15</field>
+    </record>
+
+    <record id="answer16" model="question.js.it">
+        <field name="name">Está de acuerdo con el horario y días de trabajo establecidos</field>
+        <field name="ttype">boolean</field>
+        <field name="sequence">16</field>
+    </record>
+
+    <record id="answer17" model="question.js.it">
+        <field name="name">Cuenta con conocimiento en Informática</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">17</field>
+    </record>
+
+    <record id="answer18" model="question.js.it">
+        <field name="name">Cuenta con conocimiento de Ingles</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">18</field>
+    </record>
+
+    <record id="answer19" model="question.js.it">
+        <field name="name">Cuenta con conocimiento de Italiano</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">19</field>
+    </record>
+
+    <record id="answer20" model="question.js.it">
+        <field name="name">Cuenta con licencia de conducir</field>
+        <field name="ttype">boolean</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="answer21" model="question.js.it">
+        <field name="name">Indica que tipo y antigüedad de la misma</field>
+        <field name="ttype">text</field>
+        <field name="sequence">21</field>
+    </record>
+
+    <record id="answer22" model="question.js.it">
+        <field name="name">Comenta tu experiencia en las funciones mencionadas en el aviso</field>
+        <field name="ttype">text</field>
+        <field name="sequence">22</field>
+    </record>
+
+    <record id="answer23" model="question.js.it">
+        <field name="name">Cuenta con disponibilidad para viajar</field>
+        <field name="ttype">boolean</field>
+        <field name="sequence">23</field>
+    </record>
+
+    <record id="answer24" model="question.js.it">
+        <field name="name">Indica tu disponibilidad para comenzar a trabajar</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">24</field>
+    </record>
+
+    <record id="answer25" model="question.js.it">
+        <field name="name">Indica con cuáles de los requisitos cuentas  , mencionados en la publicación </field>
+        <field name="ttype">text</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <record id="answer26" model="question.js.it">
+        <field name="name">Indica el grado académico de tus estudios Técnico</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">26</field>
+    </record>
+
+    <record id="answer27" model="question.js.it">
+        <field name="name">Indica el grado académico de tus estudios Universitarios</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">27</field>
+    </record>
+
+    <record id="answer28" model="question.js.it">
+        <field name="name">Cuentas con estudios en</field>
+        <field name="ttype">text</field>
+        <field name="sequence">28</field>
+    </record>
+
+    <record id="answer29" model="question.js.it">
+        <field name="name">Cuenta con disponibilidad para cambio de residencia</field>
+        <field name="ttype">selection</field>
+        <field name="sequence">29</field>
+    </record>
+
+    <record id="answer30" model="question.js.it">
+        <field name="name">Indica por qué te gustaría quedar seleccionado para trabajar con nosotros </field>
+        <field name="ttype">text</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="answer31" model="question.js.it">
+        <field name="name">Adjunta tu CV</field>
+        <field name="ttype">binary</field>
+        <field name="sequence">30</field>
+    </record>
+
+
+</odoo>
+

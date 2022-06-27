@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_applicant_view_form" model="ir.ui.view">
+            <field name="name">hr.applicant.form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_name']" position="after">
+                   <field name="last_name_partner"  />
+                </xpath>
+                <xpath expr="//form/sheet/group/group[4]" position="after">
+                    <group string="Extra">
+                        <field name="date_born" />
+                        <field name="gender" />
+                        <field name="type_doc" />
+                        <field name="nro_doc" />
+                        <field name="nro_passport" />
+                        <field name="height" />
+                        <field name="weight" />
+                        <field name="nro_vaccines" />
+                        <field name="residencia" />
+                        <field name="agree_salary" />
+                        <field name="agree_schedule" />
+                        <field name="know_offimatic" />
+                        <field name="know_english" />
+                        <field name="know_italic" />
+                        <field name="have_licence_cond" />
+                    </group>
+                    <group string="Extra">
+
+                        <field name="type_antiquity_licence" />
+                        <field name="notes_last_jobs" />
+                        <field name="have_availability_travel" />
+                        <field name="availability_job" />
+                        <field name="requirements_avalaible" />
+                        <field name="grade_study_tec" />
+                        <field name="grade_study_university" />
+                        <field name="additional_study" />
+                        <field name="avalaible_change_residence" />
+                        <field name="reason_job" />
+                        <field name="name_file_cv"  invisible="1" />
+                        <field name="doc_cv"  widget="file" filename="name_file" />
+                    </group>
+                </xpath>
+            </field>
+    </record>
+</odoo>
+

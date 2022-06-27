@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="preguntas_tree" model="ir.ui.view">
+           <field name="name">question.js.it.tree</field>
+           <field name="model">question.js.it</field>
+           <field name="arch" type="xml">
+              <tree string="Tree">
+                <field name="name" optional="show" />
+                <field name="ttype" optional="show" />
+              </tree>
+           </field>
+    </record>
+
+    <record model="ir.ui.view" id="preguntas_form" >
+        <field name="name">question.js.it.form</field>
+        <field name="model">question.js.it</field>
+        <field name="arch" type="xml">
+            <form string="Integrity Sale">
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="ttype" />
+                            <field name="is_email" />
+                        </group>
+                        <group>
+                            <field name="field_id"
+                                   domain="[('model_id.model', '=', 'hr.applicant'),('ttype','=',ttype)]" />
+                            <field name="sequence" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--  -->
+
+    <record id="action_preguntas_reclutamiento" model="ir.actions.act_window">
+			<field name="name">Preguntas Reclutamiento</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">question.js.it</field>
+			<field name="view_mode">tree,form</field>
+    </record>
+
+
+
+
+    <menuitem action="action_preguntas_reclutamiento"
+              parent="hr_recruitment.menu_hr_recruitment_configuration"
+              id="menu_preguntas_reclutamiento" />
+</odoo>
+
