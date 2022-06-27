@@ -5,22 +5,10 @@
             <field name="model">hr.job</field>
             <field name="inherit_id" ref="hr.view_hr_job_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form/sheet/div[3]" position="replace">
-                    <sheet>
-                        <notebook>
-                            <page string="Descripcion" name="description">
-                                <div attrs="{'invisible': [('state', '!=', 'recruit')]}">
-                                          <label for="description"/>
-                                          <field name="description"/>
-                                </div>
-                            </page>
-                            <page string="Preguntas" name="questions">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Preguntas" name="questions">
                                 <field name="questions_test"/>
                             </page>
-
-                        </notebook>
-
-                    </sheet>
                 </xpath>
             </field>
     </record>
