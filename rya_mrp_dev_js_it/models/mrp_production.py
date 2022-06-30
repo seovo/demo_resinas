@@ -211,9 +211,6 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
         ctx = self.env.context.get('wizard_rs_no')
-        if ctx:
-            raise ValueError(ctx)
-
 
         alert = False
         msg = '<ul>'
@@ -222,7 +219,7 @@ class MrpProduction(models.Model):
             if l.quantity_done > l.product_uom_qty:
                 if not self.env['res.users'].has_group('rya_mrp_dev_js_it.mrp_permitir_mas_move'):
                     raise UserError('no esta permitido ingresar mas de lo reservado: '+l.product_id.display_name)
-            if l.product_uom.category_id.is_empaque and not l.empaque_line:
+            if l.product_uom.category_id.is_empaque and not l.empaque_line and not ctx:
                 msg += f'<li>{l.product_id.display_name}  no tiene empaque</li>'
                 alert = True
 
@@ -238,6 +235,10 @@ class MrpProduction(models.Model):
                 raise UserError('La cantidad de los subproductos no puede ser cero')
             if not l.quantity_done or l.quantity_done == 0:
                 raise UserError('La cantidad producida de los subproductos no puede ser cero')
+
+            if l.product_uom.category_id.is_devolucion and (not l.cost_subproducto or  l.cost_subproducto != 0 )and not ctx:
+                msg += f'<li>{l.product_id.display_name}  el subproducto no tiene un costo </li>'
+                alert = True
 
         if alert:
             wizard = self.env['alertas.resinas'].create({'mrp_production': self.id, 'msg': msg})
