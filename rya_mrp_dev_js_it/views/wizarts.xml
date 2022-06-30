@@ -7,9 +7,10 @@
         <field name="model">alertas.resinas</field>
         <field name="arch" type="xml">
             <form string="Transfer Data To Server">
+                <h2>Esta Seguro de Proseguir?</h2>
                 <div>
-                    <field name="mrp_production" invisible="0" />
-                    <field name="msg" invisible="0" />
+                    <field name="mrp_production" invisible="1" />
+                    <field name="msg" readonly="1" />
                 </div>
                 <footer>
                     <button name="confirm_continue" string="Continuar"
