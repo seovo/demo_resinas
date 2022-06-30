@@ -6,6 +6,7 @@ class EmpaqueStockMove(models.Model):
     mrp_production_id = fields.Many2one('mrp.production',readonly=1)
     mrp_production = fields.Many2one('mrp.production',readonly=1)
     sub_producto = fields.Many2one('stock.move',readonly=1)
+    cost_subproducto = fields.Float(string="Costo",related='sub_producto.cost_subproducto')
 
     name = fields.Char(compute="dame_el_nombre_xd")
     def dame_el_nombre_xd(self):

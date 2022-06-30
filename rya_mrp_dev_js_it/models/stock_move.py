@@ -19,7 +19,6 @@ class StockMove(models.Model):
     rs_operativo_kg = fields.Float()
 
 
-
     cost_subproducto = fields.Float(string="Costo")
 
 

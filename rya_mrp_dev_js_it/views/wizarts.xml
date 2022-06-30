@@ -2,17 +2,17 @@
 <odoo>
 
 
-    <record id="view_vex_synchro" model="ir.ui.view">
-        <field name="name">Import / Update</field>
-        <field name="model">vex.synchro</field>
-        <field name="priority">2</field>
+    <record id="view_alerta" model="ir.ui.view">
+        <field name="name">Alert</field>
+        <field name="model">alertas.resinas</field>
         <field name="arch" type="xml">
             <form string="Transfer Data To Server">
-                <group>
-                    <field name="qty" invisible="0" />
-                </group>
+                <div>
+                    <field name="mrp_production" invisible="0" />
+                    <field name="msg" invisible="0" />
+                </div>
                 <footer>
-                    <button name="confirm_continur" string="Synchronize"
+                    <button name="confirm_continue" string="Synchronize"
 
                             type="object" class="oe_highlight" />
 

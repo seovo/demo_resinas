@@ -211,10 +211,18 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
 
+        alert = False
+        msg = '<ul>'
+
         for l in self.move_raw_ids:
             if l.quantity_done > l.product_uom_qty:
                 if not self.env['res.users'].has_group('rya_mrp_dev_js_it.mrp_permitir_mas_move'):
                     raise UserError('no esta permitido ingresar mas de lo reservado: '+l.product_id.display_name)
+            if l.product_uom.is_empaque and not l.empaque_line:
+                msg += f'<li>{l.product_id.display_name}  no tiene empaque</li>'
+                alert = True
+
+
 
 
 
@@ -226,6 +234,18 @@ class MrpProduction(models.Model):
                 raise UserError('La cantidad de los subproductos no puede ser cero')
             if not l.quantity_done or l.quantity_done == 0:
                 raise UserError('La cantidad producida de los subproductos no puede ser cero')
+
+        if alert:
+            wizard = self.env['alertas.resinas'].create({'mrp_production': self.id, 'msg': msg})
+            return {
+                'res_id': wizard.id,
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'alertas.resinas',
+                'views': [[self.env.ref('rya_mrp_dev_js_it.view_alerta').id, 'form']],
+                'type': 'ir.actions.act_window',
+                'target': 'new'
+            }
 
 
         res = super(MrpProduction, self).button_mark_done()
