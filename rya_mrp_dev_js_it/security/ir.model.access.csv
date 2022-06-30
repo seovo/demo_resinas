@@ -6,3 +6,4 @@ ratio,ratio,model_plantilla_ratios,,1,1,1,1
 ratio_line,ratio_line,model_plantilla_ratios_line,,1,1,1,1
 mrp_lines,mrp_lines,model_mrp_ratios_lines,,1,1,1,1
 empaquesm,emapquesm,model_empaque_stock_mv,,1,1,1,1
+wizard,wizard,model_alertas_resinas,,1,1,1,1
