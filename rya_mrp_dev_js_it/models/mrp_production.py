@@ -218,7 +218,7 @@ class MrpProduction(models.Model):
             if l.quantity_done > l.product_uom_qty:
                 if not self.env['res.users'].has_group('rya_mrp_dev_js_it.mrp_permitir_mas_move'):
                     raise UserError('no esta permitido ingresar mas de lo reservado: '+l.product_id.display_name)
-            if l.product_uom.is_empaque and not l.empaque_line:
+            if l.product_uom.category_id.is_empaque and not l.empaque_line:
                 msg += f'<li>{l.product_id.display_name}  no tiene empaque</li>'
                 alert = True
 
