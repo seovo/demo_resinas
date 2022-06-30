@@ -12,7 +12,7 @@
                     <field name="msg" invisible="0" />
                 </div>
                 <footer>
-                    <button name="confirm_continue" string="Synchronize"
+                    <button name="confirm_continue" string="Continuar"
 
                             type="object" class="oe_highlight" />
 

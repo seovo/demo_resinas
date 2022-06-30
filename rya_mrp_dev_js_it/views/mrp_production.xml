@@ -51,7 +51,6 @@
                 <xpath expr="//field[@name='move_byproduct_ids']/tree/field[@name='cost_share']"
                        position="after">
                       <field name="cost_subproducto"
-                             domain="[('cost_subproducto','!=',0)]"
                              optional="show" />
 
                 </xpath>
@@ -61,7 +60,7 @@
                     <field name="raw_material_production_id"  invisible="1" />
                     <field name="empaque_line"
                            options="{'no_open': True, 'no_create': True}"
-                           domain="[('mrp_production_id','=',raw_material_production_id)]"
+                           domain="[('mrp_production_id','=',raw_material_production_id),('cost_subproducto','!=',0)]"
                            optional="hidden" />
                     <field name="stage_id" optional="show"/>
                     <field name="should_consume_qty_store" optional="hidden"
