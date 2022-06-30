@@ -211,7 +211,9 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
         ctx = self.env.context.get('wizard_rs_no')
-        raise ValueError(ctx)
+        if ctx:
+            raise ValueError(ctx)
+
 
         alert = False
         msg = '<ul>'
