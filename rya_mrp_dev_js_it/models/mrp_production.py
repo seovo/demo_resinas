@@ -7,6 +7,7 @@ class MrpProduction(models.Model):
     ratios = fields.One2many('mrp.ratios.lines','order_id')
     total_amount_ratios = fields.Float(compute="get_total_amount_ratios",store=True)
     product_qty_origin = fields.Float(string="Cantidad Original")
+    mrp_bom_copy = fields.Many2one('mrp.bom')
 
 
     def calculate_new_cost_rs(self):
@@ -15,6 +16,10 @@ class MrpProduction(models.Model):
         #raise ValueError(str(res))
         cp =  0
         con_by = defaultdict(float)
+        info_tm = []
+        for m in self.move_finished_ids:
+            info_tm.append(str(m.state)+"/"+str(m.product_uom_qty))
+        #raise ValueError(info_tm)
         for l in self.move_finished_ids:
             if not l.state == 'done':
                 continue
@@ -38,8 +43,15 @@ class MrpProduction(models.Model):
                 #avg_cost_unit
                 line_val.unit_cost = avg_cost_unit
                 line_val.value = avg_cost_tot
-                l.rs_unit_cost = avg_cost_unit
-                l.rs_value = avg_cost_tot
+
+                l.is_valid_product_terminados = True
+                l.rs_empaque = res['cost_empaque']
+                l.rs_teorico = res['total_origin_unit']
+                l.rs_teorico_kg = res['origin_x_kilo']
+                l.rs_real = res['avg_cost_unit']
+                l.rs_real_kg = res['avg_x_kilo']
+                l.rs_operativo = res['total_operation_unit']
+                l.rs_operativo_kg = res['operation_x_kilo']
 
             # FOR SUBPRODUCTS
             for sb in res['subproductos']:
@@ -58,14 +70,21 @@ class MrpProduction(models.Model):
                     if not line_val_b.origin_value or line_val_b.origin_value != 0:
                         line_val_b.origin_value = line_val_b.value
 
-                    avg_cost_unit_b = sb['avg_cost_unit_kilo']
+                    avg_cost_unit_b = sb['avg_cost_unit_by']
                     avg_cost_tot_b = avg_cost_unit_b * line_val_b.quantity
 
                     # avg_cost_unit
                     line_val_b.unit_cost = avg_cost_unit_b
                     line_val_b.value = avg_cost_tot_b
-                    l.rs_unit_cost = avg_cost_unit_b
-                    l.rs_value = avg_cost_tot_b
+
+                    l.is_valid_product_terminados = True
+                    l.rs_empaque = sb['cost_empaque']
+                    l.rs_teorico = sb['total_origin_unit_by']
+                    l.rs_teorico_kg = sb['total_origin_unit_kilo_by']
+                    l.rs_real = sb['avg_cost_unit_by']
+                    l.rs_real_kg = sb['avg_cost_unit_kilo_by']
+                    l.rs_operativo = sb['total_operation_unit_by']
+                    l.rs_operativo_kg = sb['total_operation_unit_kilo_by']
 
             costo_actual = 0
             cantidad_actual = 0
@@ -192,7 +211,17 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
 
+        for l in self.move_raw_ids:
+            if l.quantity_done > l.product_uom_qty:
+                if not self.env['res.users'].has_group('rya_mrp_dev_js_it.mrp_permitir_mas_move'):
+                    raise UserError('no esta permitido ingresar mas de lo reservado: '+l.product_id.display_name)
+
+
+
         for l in self.move_byproduct_ids:
+            if l.quantity_done > l.product_uom_qty:
+                if not self.env['res.users'].has_group('rya_mrp_dev_js_it.mrp_permitir_mas_move'):
+                    raise UserError('no esta permitido ingresar mas de lo reservado: '+l.product_id.display_name)
             if not l.product_uom_qty or l.product_uom_qty == 0:
                 raise UserError('La cantidad de los subproductos no puede ser cero')
             if not l.quantity_done or l.quantity_done == 0:
@@ -212,9 +241,34 @@ class MrpProduction(models.Model):
                 l.cost_share += (l.quantity_done / total_count) * 100
 
         self.calculate_new_cost_rs()
+        if self.bom_id:
+            # duplicate bom list
+            pt_copy = self.bom_id.product_tmpl_id.copy()
+            pt_copy.active = False
+            bom_copy = self.bom_id.copy()
+            self.mrp_bom_copy = bom_copy.id
+            bom_copy.product_tmpl_id = pt_copy
+            bom_copy.product_id = False
+
+
 
 
         return res
+
+    def show_list_material(self):
+        return {
+            'name': ('Lista Material Original'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mrp.bom',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'target': 'current',
+            'res_id': self.mrp_bom_copy.id,
+            'context': dict(
+                self.env.context,
+            ),
+        }
 
 
 

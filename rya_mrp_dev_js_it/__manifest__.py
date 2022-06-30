@@ -24,6 +24,8 @@
         'views/mrp_production.xml',
         'views/mrp_unbuild.xml',
         'views/stock_production_lot.xml',
+        'views/uom.xml',
+
 
         ],
     'installable': True

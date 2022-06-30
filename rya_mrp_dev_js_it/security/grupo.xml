@@ -10,5 +10,10 @@
 			<field name="name">Descontruir</field>
 			<field name="category_id" ref="base.module_category_hidden"/>
 		</record>
+
+		<record id="mrp_permitir_mas_move" model="res.groups">
+			<field name="name">Permitir Ingresar mas cantidad en Produccion</field>
+			<field name="category_id" ref="base.module_category_hidden"/>
+		</record>
 	</data>
 </odoo>

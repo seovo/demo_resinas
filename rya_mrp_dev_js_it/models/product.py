@@ -5,6 +5,13 @@ from datetime import timedelta
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_round, float_is_zero
 
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def _match_all_variant_values(self, product_template_attribute_value_ids):
+        if not self.active:
+            return True
+        return super(ProductProduct, self)._match_all_variant_values(product_template_attribute_value_ids)
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"

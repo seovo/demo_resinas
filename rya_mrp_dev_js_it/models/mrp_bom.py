@@ -46,6 +46,8 @@ class MrpBom(models.Model):
 
         self.active = act
 
+
+
     def write(self, values):
 
 

@@ -17,6 +17,7 @@
           <option value="models.product.barcode" />
           <option value="odoo.tools.misc.get_lang" />
           <option value="tuple.currency_id" />
+          <option value="odoo.api.onchage" />
         </list>
       </option>
     </inspection_tool>

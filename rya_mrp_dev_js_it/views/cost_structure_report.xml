@@ -24,43 +24,37 @@
                         <h3 class="o_mrp_header">By product(s)</h3>
                     </t>
                     <div t-foreach="line['qty_by_byproduct'].items()" t-as="byproduct">
-                        <td>
+                        <t t-if="line['cost_cost_by_product'][byproduct[0]] == 0">
+                            <td>
                             <span t-esc="byproduct[0].name"/>
-                        </td>
-                        <td class="text-right">
+                            </td>
+                            <td class="text-right">
                             <span t-esc="byproduct[1]"/>
                             <span  t-esc="byproduct[0].uom_id.name"/>
-                        </td>
+                             </td>
+
+                        </t>
+
                     </div>
-                    <h6 class="h6" t-if="line['subproductos']" >
+                    <h6 class="h6"  >
                             Peso Total : <span t-esc="line['weight_total']"/>
+                    </h6>
+                    <!--
+                    <h6 class="h6" >
+                            Peso Original : <span t-esc="line['quantity_origin']"/>
+                    </h6>
+                    -->
+                    <h6 class="h6" >
+                            Peso Componentes : <span t-esc="line['peso_componentes_real']"/>
                     </h6>
                     <div><br/></div>
 
                     <t t-if="1==1">
-                    <!--<t t-if="line['subproductos']">-->
-                        <!--<h3 class="o_mrp_header o_mrp_table_header">Cost Breakdown of Products</h3> -->
-
-                        <!--
-                        <h6 class="h6" t-if="line['subproductos']" >
-                            Costo Teorico x kilo : <span t-esc="line['total_origin_unit_kilo']"/>
-                        </h6>
-                        <h6 class="h6" t-if="line['subproductos']" >
-                            Costo Real x kilo : <span t-esc="line['avg_cost_unit_kilo']"/>
-                        </h6>
-                        <h6 class="h6" t-if="line['subproductos']" >
-                            Costo Operativo x kilo : <span t-esc="line['total_operation_unit_kilo']"/>
-                        </h6>
-                        -->
-                        <table class="table table-sm o_mrp_report_table">
+                        <table class="table table-sm o_mrp_report_table mb-4">
                             <thead>
                                 <tr class="o_mrp_report_header">
                                     <th class="o_mrp_report_line_header"><span>Product</span></th>
-                                    <!--
-                                    <th class="text-right o_mrp_report_line_header"><span>Avg Cost of Components Per Unit</span></th>
-                                    <th t-if="line['operations']" class="text-right o_mrp_report_line_header"><span>Avg Cost of Operations Per Unit</span></th>
-                                    <th class="text-right o_mrp_report_line_header"><span>Avg Total Cost Per Unit</span></th>
-                                    -->
+
                                     <th class="o_mrp_report_line_header text-right" ><span>Unidad</span></th>
                                     <th class="text-right o_mrp_report_line_header" t-if="line['here_package']" ><span>Empaque</span></th>
                                     <th class="text-right o_mrp_report_line_header"><span>C. Teorico Unid</span></th>
@@ -120,37 +114,24 @@
                                         <span t-esc="byproduct['cost_empaque']" t-options='{"widget": "monetary", "display_currency": currency}' />
                                     </td>
 
-
-
-                                    <!--
                                     <td class="text-right">
-                                        <span t-esc="line['component_cost_by_product'][byproduct[0]] / byproduct[1]" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    <td t-if="line['operations']" class="text-right">
-                                        <span t-esc="line['operation_cost_by_product'][byproduct[0]] / byproduct[1]" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['total_origin_unit_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="line['total_cost_by_product'][byproduct[0]] / byproduct[1]" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    -->
-                                    <td class="text-right">
-                                        <span t-esc="byproduct['total_origin_unit_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['total_origin_unit_kilo_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="byproduct['origin_x_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['avg_cost_unit_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="byproduct['avg_cost_unit_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['avg_cost_unit_kilo_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="byproduct['avg_x_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-esc="byproduct['total_operation_unit_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['total_operation_unit_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
 
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="byproduct['operation_x_kilo']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <span t-esc="byproduct['total_operation_unit_kilo_by']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
 
                                 </tr>
@@ -160,7 +141,7 @@
 
                     <!-- Cost Structure table -->
                     <h3 class="o_mrp_header o_mrp_table_header">Cost of Components</h3>
-                    <table class="table table-sm o_mrp_report_table">
+                    <table class="table table-sm o_mrp_report_table mb-4">
                         <thead>
                             <tr class="o_mrp_report_header">
                                 <th class="o_mrp_report_line_header"><span>Components</span></th>
@@ -205,11 +186,14 @@
                                 </t>
                             </tr>
                             <tr>
-                                <td colspan="3" class="text-right">
+                                <td colspan="2" class="text-right">
                                     <strong>Total Cost of Components</strong>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="line['weight_total_components']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    <span t-esc="line['weight_total_te_components']"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="line['weight_total_components']" />
                                 </td>
                                 <td/>
                                 <td class="text-right">
@@ -219,22 +203,83 @@
                                     <strong t-esc="line['total_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                 </td>
                             </tr>
-                            <tr t-if="not line['subproductos'] and line['mo_qty'] &gt; 1" >
-                                <td colspan="5" class="text-right">
-                                    <strong>Cost of Components per unit (in <t t-esc="line['product'].uom_id.name"/>)</strong>
-                                </td>
-
-                                <td class="text-right">
-                                    <span t-esc="line['total_cost'] / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
 
 
+                    <t t-if="line['devoluciones']">
+                        <h3 class="o_mrp_header o_mrp_table_header">Devoluciones</h3>
+                        <table class="table table-sm o_mrp_report_table mb-4">
+                           <thead>
+                            <tr class="o_mrp_report_header">
+                                <th class="o_mrp_report_line_header"  colspan="2" >
+                                    <span>Components</span>
+                                </th>
+                                <th class="text-right o_mrp_report_line_header"><span>Fabricar</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Producido</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Costo Unitario</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Costo Teorico</span></th>
+                                <th class="text-right o_mrp_report_line_header"><span>Costo Real</span></th>
+                            </tr>
+                           </thead>
+                           <tbody>
+                            <tr t-foreach="line['devoluciones']" t-as="m" class="text-muted">
+                                <t t-if="m['move']">
+                                    <td  colspan="2" >
+                                       <span
+                                        class="o_mrp_reports_web_action" t-esc="m['move'].product_id.display_name"
+                                        />
+                                    </td>
+
+                                    <td class="text-right">
+                                        <span t-esc="m['move'].product_uom_qty" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                        <span t-esc="m['move'].product_uom.name"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="m['move'].quantity_done" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                        <span t-esc="m['move'].product_uom.name"/>
+                                    </td>
+                                    <td class="text-right">
+                                       <span t-esc="m['t_subproduct']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="m['cost_origin']" t-options='{"widget": "monetary", "display_currency": currency}' />
+                                    </td>
+                                    <td class="text-right">
+                                         <span t-esc="m['cost_tot']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+
+                                </t>
+                            </tr>
+
+                            <tr>
+                                <td  class="text-right" colspan="2">
+                                    <strong>Total Devoluciones</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="line['qty_tot_fabr']"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="line['qty_tot_prod']" />
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="line['tot_t_subproduct']" />
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="line['amount_to_fab']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                </td>
+                                <td class="text-right">
+                                    <strong t-esc="line['total_producido']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </t>
+
+
                     <t t-if="line['here_package']">
                         <h3 class="o_mrp_header o_mrp_table_header">Empaques</h3>
-                        <table class="table table-sm o_mrp_report_table">
+                        <table class="table table-sm o_mrp_report_table mb-4">
                         <thead>
                             <tr class="o_mrp_report_header">
                                 <th class="o_mrp_report_line_header"><span>Empaque</span></th>
@@ -248,11 +293,11 @@
                             <tr t-foreach="line['raw_material_moves']" t-as="m" class="text-muted">
                                 <t t-if="m['pt']">
                                     <td>
-                                    <span
-                                        class="o_mrp_reports_web_action" t-esc="m['product_id'].display_name" view-type="form"
-                                        t-att-res-id="m['product_id'].id"
-                                        res-model="product.product"/>
-                                </td>
+                                        <span
+                                            class="o_mrp_reports_web_action" t-esc="m['product_id'].display_name" view-type="form"
+                                            t-att-res-id="m['product_id'].id"
+                                            res-model="product.product"/>
+                                    </td>
                                     <td>
                                        <span  t-esc="m['pt'].display_name"  t-if="m['pt']" />
                                     </td>
@@ -412,7 +457,7 @@
                     </t>
 
                     <!-- Cost table -->
-                    <div class="row mt-4">
+                    <div class="row mb-4">
                         <div class="col-6 offset-6">
                             <table class="table table-sm o_mrp_report_table">
                                 <tr t-if="line['mo_qty'] + len(line['subproductos']) &gt; 1">
@@ -420,7 +465,7 @@
                                         <strong>Total Production Cost</strong>
                                     </td>
                                     <td class="text-right">
-                                        <strong t-esc="line['total_cost'] + opcost + line['total_ratio']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        <strong t-esc="line['total_cost'] + opcost + line['total_ratio'] + line['total_producido']" t-options='{"widget": "monetary", "display_currency": currency}'/>
                                     </td>
                                 </tr>
                                 <tr t-if="not line['subproductos']">

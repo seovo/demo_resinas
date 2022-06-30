@@ -14,6 +14,18 @@ class MrpCostStructure(models.AbstractModel):
     def get_lines(self, productions):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']
+        #StockProduction = self.env['mrp.production']
+        quantity_origin = 0
+        factor_production = 1
+        is_kg = False
+        peso_componentes_real = 0
+        for pt  in productions:
+            quantity_origin += pt.product_qty_origin
+            factor_production = factor_production * pt.product_uom_id.ratio
+            if pt.product_uom_id == self.env.ref('uom.product_uom_kgm'):
+                is_kg = True
+
+
         res = []
         currency_table = self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}})
         for product in productions.mapped('product_id'):
@@ -59,20 +71,6 @@ class MrpCostStructure(models.AbstractModel):
             raw_material_moves = []
 
 
-
-            query_str = """SELECT
-                                sm.product_id,
-                                mo.id,
-                                abs(SUM(svl.quantity)),
-                                abs(SUM(svl.value)),
-                                currency_table.rate ,
-                                sm.id 
-                             FROM stock_move AS sm
-                       INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
-                       LEFT JOIN mrp_production AS mo on sm.raw_material_production_id = mo.id
-                       LEFT JOIN {currency_table} ON currency_table.company_id = mo.company_id
-                            WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0 AND scrapped != 't'
-                         GROUP BY sm.product_id, mo.id, currency_table.rate , sm.id """.format(currency_table=currency_table,)
 
             #SE QUITO LA CANTIDAD 0
             query_str = """SELECT
@@ -123,12 +121,22 @@ class MrpCostStructure(models.AbstractModel):
             cost_empaque_byproduct_w_costshare = defaultdict(float)
             component_cost_by_product = defaultdict(float)
             operation_cost_by_product = defaultdict(float)
+            cost_cost_by_product = defaultdict(float)
+            uom_by_product = defaultdict(int)
             # tracking consistent uom usage across each byproduct when not using byproduct's product uom is too much of a pain
             # => calculate byproduct qtys/cost in same uom + cost shares (they are MO dependent)
             byproduct_moves = mos.move_byproduct_ids.filtered(lambda m: m.state != 'cancel')
+            devoluciones = []
+            qty_tot_fabr = 0
+            qty_tot_prod = 0
+            tot_t_subproduct = 0
+            amount_to_fab = 0
+            total_producido = 0
             for move in byproduct_moves:
 
+                cost_cost_by_product[move.product_id] += move.cost_subproducto
                 qty_by_byproduct[move.product_id] += move.product_qty
+                uom_by_product[move.product_id] = move.product_uom.id
                 # byproducts w/o cost share shouldn't be included in cost breakdown
                 if move.cost_share != 0:
                     qty_by_byproduct_w_costshare[move.product_id] += move.product_qty
@@ -143,6 +151,25 @@ class MrpCostStructure(models.AbstractModel):
                     total_cost_by_product[move.product_id] += total_cost_by_mo[move.production_id.id] * cost_share
                     component_cost_by_product[move.product_id] += component_cost_by_mo[move.production_id.id] * cost_share
                     operation_cost_by_product[move.product_id] += operation_cost_by_mo[move.production_id.id] * cost_share
+                #para devoluciones
+                if move.cost_subproducto != 0:
+                    cost_origin = move.product_uom_qty * move.cost_subproducto * -1
+                    cost_tot = move.quantity_done * move.cost_subproducto * -1
+
+                    t_subproduct = move.cost_subproducto * -1
+                    tot_t_subproduct += t_subproduct
+                    qty_tot_fabr += move.product_uom_qty
+                    qty_tot_prod += move.quantity_done
+
+                    amount_to_fab += cost_origin
+                    total_producido += cost_tot
+
+                    devoluciones.append(dict(
+                        move=move,
+                        cost_origin=cost_origin,
+                        cost_tot=cost_tot,
+                        t_subproduct=t_subproduct
+                    ))
 
             #raise  ValueError(qty_by_byproduct_w_costshare)
 
@@ -176,48 +203,60 @@ class MrpCostStructure(models.AbstractModel):
             avg_cost = 0
             here_package = False
             weight_total_components = 0
+            weight_total_te_components = 0
+
+
 
             for r in raw_material_moves:
                 if not r['pt']:
                     amount_to_cost += r['cost_origin']
                     avg_cost += r['cost']
                     weight_total_components += r['qty']
+                    weight_total_te_components += r['sm'].should_consume_qty_store
+
+
+                    if r['sm'].product_uom == self.env.ref('uom.product_uom_kgm'):
+                        peso_componentes_real += r['qty']
+                    else:
+                        peso_componentes_real += r['qty'] * r['sm'].product_uom.ratio * r['product_id'].weight
+
+
+
                 else:
                     here_package = True
+
+            amount_to_cost_x = amount_to_cost
+            avg_cost_x = avg_cost
+
+            amount_to_cost += amount_to_fab
+            avg_cost += total_producido
 
 
             total_production_cost = avg_cost + total_ratiox
 
-            avg_cost_unit = avg_cost / cantidad_total if cantidad_total != 0 else avg_cost
-            total_origin_unit = amount_to_cost / cantidad_total if cantidad_total != 0 else amount_to_cost
-            total_operation_unit = total_production_cost / cantidad_total if cantidad_total != 0 else total_ratiox
 
+            #calcular peso total
+            if is_kg :
+                weight_total = mo_qty * factor_production
 
-            avg_cost_unit_kilo = 0
-            total_origin_unit_kilo = 0
-            total_operation_unit_kilo = 0
-            #cambios a calculos por kilos cuando hay sub productos
-            weight_total = mo_qty
+            else:
+                weight_total = mo_qty * factor_production * product.weight
+
+            #raise ValueError([mo_qty,factor_production,product.weight])
+
             if qty_by_byproduct:
                 #weight_total = product.weight * mo_qty
-
-
                 for sp in qty_by_byproduct.items():
+                    cost_subpro = cost_cost_by_product[sp[0]]
+                    if cost_subpro or cost_subpro != 0:
+                        continue
+
                     weight_total += sp[1] * sp[0].weight
 
+            #raise ValueError(weight_total)
 
+            #calcular costo empaques
 
-                avg_cost_unit_kilo = avg_cost / weight_total if weight_total != 0 else 0
-                avg_cost_unit  = avg_cost_unit_kilo
-
-                total_origin_unit_kilo = amount_to_cost / weight_total_components if weight_total_components != 0 else 0
-                total_origin_unit = total_origin_unit_kilo
-
-                total_operation_unit_kilo = total_production_cost / weight_total if weight_total != 0 else 0
-                total_operation_unit = total_operation_unit_kilo
-
-
-            #avg_cost_unit =
             cost_empaque_line = 0
 
             for pts in productions:
@@ -228,34 +267,94 @@ class MrpCostStructure(models.AbstractModel):
                                 cost_empaque_line += rmv['cost_unit']
                                 here_package = True
 
+            avg_cost_unit_i = avg_cost / weight_total if weight_total != 0 else 0
+            total_operation_unit_i = total_production_cost / weight_total if weight_total != 0 else 0
+            total_origin_unit_i = avg_cost / peso_componentes_real if peso_componentes_real != 0 else 0
+            if is_kg:
+
+
+                avg_cost_unit = avg_cost_unit_i + cost_empaque_line
+                avg_cost_unit_kilo =  avg_cost_unit
+
+
+                total_operation_unit = total_operation_unit_i + cost_empaque_line
+                total_operation_unit_kilo = total_operation_unit
+
+
+                total_origin_unit = total_origin_unit_i + cost_empaque_line
+                total_origin_unit_kilo = total_origin_unit + cost_empaque_line
+
+            else:
+
+
+                avg_cost_unit = (avg_cost_unit_i * product.weight) + cost_empaque_line
+                avg_cost_unit_kilo =avg_cost_unit  /  product.weight if product.weight != 0 else 0
+
+
+                total_operation_unit = ( total_operation_unit_i * product.weight )  + cost_empaque_line
+                total_operation_unit_kilo = total_operation_unit   /  product.weight if product.weight != 0 else 0
+
+
+                total_origin_unit =  (total_origin_unit_i  * product.weight ) + cost_empaque_line
+                total_origin_unit_kilo = (total_origin_unit ) / product.weight if product.weight != 0 else 0
+
+
             subproductos = []
+
             for byproduct in qty_by_byproduct_w_costshare.items():
-                cost_empaque = cost_empaque_byproduct_w_costshare[byproduct[0]]
-                total_origin_unit_kilo_k = (total_origin_unit_kilo * byproduct[0].weight) + cost_empaque
-                avg_cost_unit_kilo_k = (avg_cost_unit_kilo * byproduct[0].weight) + cost_empaque
-                total_operation_unit_kilo_k = (total_operation_unit_kilo * byproduct[0].weight) + cost_empaque
+                cost_subpro = cost_cost_by_product[byproduct[0]]
+                if not cost_subpro or cost_subpro == 0:
+                    cost_empaque = cost_empaque_byproduct_w_costshare[byproduct[0]]
 
-                weight_sb = byproduct[0].weight
 
-                origin_x_kilo = total_origin_unit_kilo_k / weight_sb if  weight_sb != 0 else 0
-                avg_x_kilo = avg_cost_unit_kilo_k / weight_sb if weight_sb != 0 else 0
-                operation_x_kilo = total_operation_unit_kilo_k / weight_sb if weight_sb != 0 else 0
+                    if uom_by_product[byproduct[0]] == self.env.ref('uom.product_uom_kgm').id:
 
-                subproductos.append(dict(
-                    product=byproduct[0],
-                    cost_empaque=cost_empaque,
-                    total_origin_unit_kilo=total_origin_unit_kilo_k,
-                    avg_cost_unit_kilo=avg_cost_unit_kilo_k,
-                    total_operation_unit_kilo=total_operation_unit_kilo_k,
-                    origin_x_kilo=origin_x_kilo,
-                    avg_x_kilo=avg_x_kilo,
-                    operation_x_kilo=operation_x_kilo
+                        avg_cost_unit_by = avg_cost_unit_i + cost_empaque
+                        avg_cost_unit_kilo_by = avg_cost_unit_by
 
-                ))
+                        total_operation_unit_by = total_operation_unit_i + cost_empaque
+                        total_operation_unit_kilo_by = total_operation_unit_by
 
-            origin_x_kilo_line =  total_origin_unit_kilo + cost_empaque_line
-            avg_x_kilo_line = avg_cost_unit_kilo + cost_empaque_line
-            operation_x_kilo_line = total_operation_unit + cost_empaque_line
+                        total_origin_unit_by = total_origin_unit_i + cost_empaque
+                        total_origin_unit_kilo_by = total_origin_unit_by + cost_empaque
+
+                    else:
+
+                        avg_cost_unit_by = (avg_cost_unit_i *byproduct[0].weight) + cost_empaque
+                        avg_cost_unit_kilo_by = avg_cost_unit_by / byproduct[0].weight if byproduct[0].weight != 0 else 0
+
+                        total_operation_unit_by = (total_operation_unit_i * byproduct[0].weight) + cost_empaque
+                        total_operation_unit_kilo_by = total_operation_unit_by / byproduct[0].weight if byproduct[0].weight != 0 else 0
+
+                        total_origin_unit_by = (total_origin_unit_i * byproduct[0].weight) + cost_empaque
+                        total_origin_unit_kilo_by = (total_origin_unit_by) / byproduct[0].weight if byproduct[0].weight != 0 else 0
+
+
+
+                    dx_dx = dict(
+                        product=byproduct[0],
+                        cost_empaque=cost_empaque,
+
+                        total_origin_unit_by = total_origin_unit_by ,
+                        total_origin_unit_kilo_by = total_origin_unit_kilo_by  ,
+
+                        avg_cost_unit_by=avg_cost_unit_by,
+                        avg_cost_unit_kilo_by = avg_cost_unit_kilo_by ,
+                        total_operation_unit_by=total_operation_unit_by,
+                        total_operation_unit_kilo_by=total_operation_unit_kilo_by
+
+
+
+
+                    )
+
+                    subproductos.append(dx_dx)
+
+            origin_x_kilo_line =  total_origin_unit_kilo
+            avg_x_kilo_line = avg_cost_unit_kilo
+
+
+
 
             res.append({
                 'product': product,
@@ -264,7 +363,7 @@ class MrpCostStructure(models.AbstractModel):
                 'operations': operations,
                 'currency': self.env.company.currency_id,
                 'raw_material_moves': raw_material_moves,
-                'total_cost': avg_cost,
+                'total_cost': avg_cost_x,
                 #'total_cost': total_cost,
                 'scraps': scraps,
                 'mocount': len(mos),
@@ -279,20 +378,34 @@ class MrpCostStructure(models.AbstractModel):
                 'total_ratio': total_ratiox ,
                 'total_origin_unit':  total_origin_unit ,
                 'total_operation_unit': total_operation_unit ,
-                'amount_to_cost': amount_to_cost ,
-                'avg_cost':avg_cost,
+                'amount_to_cost': amount_to_cost_x ,
+                'avg_cost':avg_cost_x,
                 'avg_cost_unit': avg_cost_unit ,
                 'avg_cost_unit_kilo': avg_cost_unit_kilo ,
                 'total_origin_unit_kilo': total_origin_unit_kilo ,
                 'total_operation_unit_kilo': total_operation_unit_kilo ,
                 'weight_total': weight_total,
                 'weight_total_components': weight_total_components ,
+                'weight_total_te_components': weight_total_te_components ,
                 'here_package':here_package ,
                 'cost_empaque_byproduct_w_costshare': cost_empaque_byproduct_w_costshare ,
                 'cost_empaque': cost_empaque_line,
                 'origin_x_kilo' : origin_x_kilo_line,
                 'avg_x_kilo' : avg_x_kilo_line,
-                'operation_x_kilo' : operation_x_kilo_line
+                'operation_x_kilo' : total_operation_unit_kilo ,
+                'quantity_origin': quantity_origin,
+
+                'devoluciones': devoluciones ,
+                'qty_tot_fabr': qty_tot_fabr ,
+                'qty_tot_prod': qty_tot_prod ,
+                'amount_to_fab': amount_to_fab ,
+                'total_producido': total_producido ,
+                'tot_t_subproduct': tot_t_subproduct ,
+
+                'cost_cost_by_product': cost_cost_by_product ,
+                'peso_componentes_real': peso_componentes_real
+
+
 
             })
         return res

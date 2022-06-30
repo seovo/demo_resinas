@@ -1,5 +1,5 @@
 from odoo import fields, models , api , _
-from odoo.tools import float_compare, float_round, float_is_zero, OrderedSet
+from odoo.exceptions import UserError
 class StockMove(models.Model):
     _inherit = 'stock.move'
     solicitud_production_line = fields.Many2one('solicitud.production.line',string="SM")
@@ -9,8 +9,21 @@ class StockMove(models.Model):
                                       digits='Product Unit of Measure')
     empaque_line = fields.Many2one('empaque.stock.mv', string="PT")
 
-    rs_unit_cost = fields.Float()
-    rs_value = fields.Float()
+    is_valid_product_terminados = fields.Boolean()
+    rs_empaque = fields.Float()
+    rs_teorico = fields.Float()
+    rs_teorico_kg = fields.Float()
+    rs_real = fields.Float()
+    rs_real_kg = fields.Float()
+    rs_operativo = fields.Float()
+    rs_operativo_kg = fields.Float()
+
+
+
+    cost_subproducto = fields.Float(string="Costo")
+
+
+
 
 
 
