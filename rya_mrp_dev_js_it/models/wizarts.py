@@ -5,4 +5,5 @@ class AlertasResinas(models.TransientModel):
     mrp_production = fields.Many2one('mrp.production')
     msg = fields.Html()
     def confirm_continue(self):
+        self.mrp_production.with_context(wizard_rs_no=True)
         return self
