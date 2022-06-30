@@ -6,4 +6,4 @@ class AlertasResinas(models.TransientModel):
     msg = fields.Html()
     def confirm_continue(self):
         self.mrp_production.with_context(wizard_rs_no=True)
-        return self
+        self.mrp_production.button_mark_done()
