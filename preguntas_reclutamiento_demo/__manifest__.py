@@ -11,7 +11,8 @@
     'auto_install': False,
     'demo': [],
     'data': [
-
+          'security/ir.model.access.csv',
+          'views/question_job.xml'
         ],
     'installable': True
 }

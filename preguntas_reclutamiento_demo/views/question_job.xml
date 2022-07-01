@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_preguntas_reclutamiento" model="ir.actions.act_window">
+			<field name="name">Preguntas Reclutamiento</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">question.js.it</field>
+			<field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_preguntas" action="action_preguntas_reclutamiento"
+              parent="hr_recruitment.menu_hr_recruitment_configuration" />
+</odoo>
