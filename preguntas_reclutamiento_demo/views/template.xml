@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="website_hr_recruitment.apply" >
-        <t t-set="additional_title">Apply Job</t>
-
-        <div id="wrap" class="container">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Apply Job</t>
+            <div id="wrap" class="container">
             <h1 class="text-center mt-2">
                 Job Application Form
             </h1>
@@ -126,6 +126,8 @@
             </div>
             <div class="oe_structure mt-2"/>
         </div>
+        </t>
+
 
     </template>
 </odoo>
