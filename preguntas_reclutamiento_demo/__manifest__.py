@@ -13,7 +13,8 @@
     'data': [
           'security/ir.model.access.csv',
           'views/question_job.xml',
-          'views/hr_job.xml'
+          'views/hr_job.xml',
+          'views/template.xml'
         ],
     'installable': True
 }
